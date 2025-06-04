@@ -77,6 +77,80 @@
             color: #f5f5f5;
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
         }
+
+        /* styles de la bibliothèque */
+        .book-section {
+            margin: 40px auto;
+            max-width: 900px;
+        }
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+        .book {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .book:hover {
+            transform: translateY(-5px);
+        }
+        .book img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        .book-title {
+            padding: 10px;
+            font-weight: bold;
+        }
+        body.dark-mode .book {
+            background: rgba(50,50,50,0.8);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #fff;
+            color: #333;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90%;
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+        body.dark-mode .modal-content {
+            background: #2c2c2c;
+            color: #f5f5f5;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -88,9 +162,53 @@
     <img src="logo.svg" alt="Logo ALGÉROC" style="width:200px;margin:20px auto;display:block;" />
     <p>Ce projet symbolise l'amitié entre l'Algérie et le Maroc. Ensemble, vers un Maghreb uni et créatif!</p>
     <button class="toggle-dark" type="button" onclick="toggleDarkMode()">Mode sombre</button>
+
+    <section class="book-section">
+        <h2>Livres</h2>
+        <div id="bookGrid" class="book-grid"></div>
+    </section>
+    <div id="bookModal" class="modal">
+        <div id="modalContent" class="modal-content"></div>
+    </div>
+
     <script>
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
+        }
+
+        const books = [
+            {
+                title: "Découverte du Maghreb",
+                cover: "https://via.placeholder.com/150x220.png?text=Maghreb",
+                content: "<p>Chapitre 1 : Introduction au Maghreb...</p><p>Chapitre 2 : Culture et traditions...</p>"
+            },
+            {
+                title: "Voyage en Afrique du Nord",
+                cover: "https://via.placeholder.com/150x220.png?text=Voyage",
+                content: "<p>Préface...</p><p>Pages passionnantes sur le voyage.</p>"
+            }
+        ];
+
+        const bookGrid = document.getElementById('bookGrid');
+        const modal = document.getElementById('bookModal');
+        const modalContent = document.getElementById('modalContent');
+
+        books.forEach((book, index) => {
+            const div = document.createElement('div');
+            div.className = 'book';
+            div.innerHTML = `<img src="${book.cover}" alt="${book.title}"><div class="book-title">${book.title}</div>`;
+            div.addEventListener('click', () => openBook(index));
+            bookGrid.appendChild(div);
+        });
+
+        function openBook(index) {
+            const book = books[index];
+            modalContent.innerHTML = `<button class="modal-close" onclick="closeBook()">&times;</button><h2>${book.title}</h2>${book.content}`;
+            modal.style.display = 'flex';
+        }
+
+        function closeBook() {
+            modal.style.display = 'none';
         }
     </script>
     <footer>
