@@ -121,10 +121,19 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.6);
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
         .modal-content {
             background: #fff;
@@ -150,6 +159,33 @@
             color: inherit;
             font-size: 1.5em;
             cursor: pointer;
+        }
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .chapter-nav button {
+            background: #2c3e50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .chapter-nav button:hover:not([disabled]) {
+            background: #1a242f;
+        }
+        .chapter-nav button[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        body.dark-mode .chapter-nav button {
+            background: #444;
+        }
+        body.dark-mode .chapter-nav button:hover:not([disabled]) {
+            background: #333;
         }
     </style>
 </head>
@@ -179,15 +215,24 @@
         const books = [
             {
                 title: "Découverte du Maghreb",
-                cover: "https://via.placeholder.com/150x220.png?text=Maghreb",
-                content: "<p>Chapitre 1 : Introduction au Maghreb...</p><p>Chapitre 2 : Culture et traditions...</p>"
+                cover: "covers/maghreb.svg",
+                chapters: [
+                    "<p>Chapitre 1 : Introduction au Maghreb...</p>",
+                    "<p>Chapitre 2 : Culture et traditions...</p>"
+                ]
             },
             {
                 title: "Voyage en Afrique du Nord",
-                cover: "https://via.placeholder.com/150x220.png?text=Voyage",
-                content: "<p>Préface...</p><p>Pages passionnantes sur le voyage.</p>"
+                cover: "covers/voyage.svg",
+                chapters: [
+                    "<p>Préface...</p>",
+                    "<p>Pages passionnantes sur le voyage.</p>"
+                ]
             }
         ];
+
+        let currentBook = 0;
+        let currentChapter = 0;
 
         const bookGrid = document.getElementById('bookGrid');
         const modal = document.getElementById('bookModal');
@@ -201,14 +246,44 @@
             bookGrid.appendChild(div);
         });
 
+        function renderChapter() {
+            const book = books[currentBook];
+            const chapter = book.chapters[currentChapter];
+            modalContent.innerHTML = `
+                <button class="modal-close" aria-label="Fermer" onclick="closeBook()">✖️</button>
+                <h2>${book.title}</h2>
+                <div class="chapter">${chapter}</div>
+                <div class="chapter-nav">
+                    <button id="prevChapter" ${currentChapter === 0 ? 'disabled' : ''}>Chapitre précédent</button>
+                    <button id="nextChapter" ${currentChapter === book.chapters.length - 1 ? 'disabled' : ''}>Chapitre suivant</button>
+                </div>`;
+            document.getElementById('prevChapter').addEventListener('click', prevChapter);
+            document.getElementById('nextChapter').addEventListener('click', nextChapter);
+        }
+
         function openBook(index) {
-            const book = books[index];
-            modalContent.innerHTML = `<button class="modal-close" onclick="closeBook()">&times;</button><h2>${book.title}</h2>${book.content}`;
-            modal.style.display = 'flex';
+            currentBook = index;
+            currentChapter = 0;
+            renderChapter();
+            modal.classList.add('show');
         }
 
         function closeBook() {
-            modal.style.display = 'none';
+            modal.classList.remove('show');
+        }
+
+        function nextChapter() {
+            if (currentChapter < books[currentBook].chapters.length - 1) {
+                currentChapter++;
+                renderChapter();
+            }
+        }
+
+        function prevChapter() {
+            if (currentChapter > 0) {
+                currentChapter--;
+                renderChapter();
+            }
         }
     </script>
     <footer>
