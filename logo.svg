@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="algerocGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#006233"/>
+      <stop offset="100%" stop-color="#c1272d"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#algerocGradient)" />
+  <!-- Croissant rouge inspiré de l'Algérie -->
+  <path d="M120 60 A40 40 0 1 1 120 140 A25 25 0 1 0 120 60 Z" fill="#e30016" />
+  <!-- Étoile rouge algérienne -->
+  <polygon points="50,20 57.0534,40.2918 78.5317,40.7295 61.4127,53.7082 67.6336,74.2705 50,62 32.3664,74.2705 38.5873,53.7082 21.4683,40.7295 42.9466,40.2918" fill="#e30016" transform="translate(50,50)" />
+  <!-- Étoile verte marocaine -->
+  <path d="M100,60 L123.511,132.361 L61.958,87.639 L138.042,87.639 L76.489,132.361 Z" fill="none" stroke="#0f7a3d" stroke-width="6" />
+</svg>

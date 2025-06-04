@@ -12,6 +12,7 @@ Ce projet est dédié à l’union, la créativité et l’amitié entre l’Alg
 - 🇩🇿 Algérie  
 - 🇲🇦 Maroc  
 - 🤝 StarYAM
+- 🎨 [Logo SVG](logo.svg)
 
 ---
 
